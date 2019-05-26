@@ -1,0 +1,38 @@
+{
+  "name": "Api_Sales_RP",
+  "version": "1.0.0",
+  "description": "Api RP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alonsohhl/Api_Sales_RP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alonsohhl/Api_Sales_RP/issues"
+  },
+  "homepage": "https://github.com/Alonsohhl/Api_Sales_RP#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^8.0.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.0",
+    "jsonwebtoken": "^8.4.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "eslint": "^5.16.0",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.4.1",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2"
+  }
+}
