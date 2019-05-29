@@ -1,14 +1,12 @@
 const controller = {};
 
-// var mongoose = require('mongoose');
 const jwt = require("jsonwebtoken")
 const { check, validationResult } = require('express-validator/check');
  
-// mongoose.connect('mongodb+srv://admin:admin@dbbolsadetrabajo-3qw6r.mongodb.net/dbbolsadetrabajo', { useNewUrlParser: true });
-// get reference to database
 
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
+var pool=require("./db/connection")
+
+
 
 /**
  * !descinebtar estos
@@ -26,7 +24,7 @@ controller.index = (req, res) => {
 
 /* ================= Insertar Empresa ===================*/
 controller.insEmp = (req, res) => { //
-    
+    console.log("Ins emp")
     // var newEmp = new EmpresasModel(req.body);
     // // newEmp._id=new mongoose.Types.ObjectId();
     // newEmp.save(function (err) {

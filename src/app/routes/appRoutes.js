@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const appController = require('../controllers/appController');
+const userController = require("../controllers/userController");
 
 const appCustomValidator = require("./routeValidator").appCustomValidator;
 
@@ -13,6 +14,7 @@ router.post('/insertarEmp', appController.insEmp); //ingresa empresa
 
 
 // /*====================== Usuario ====================*/
+router.post("/insUsu",userController.insert)
 // router.post('/insUsu', appCustomValidator.VALIDATE_REGISTER,   appController.insUsu); //ingresa usuario
 // router.post('/insUsuProp/', appController.insUsuProp); //ingresa propuesta usuario
 // router.post('/usuLogin/', appController.usuLogin); //ingresa propuesta usuario

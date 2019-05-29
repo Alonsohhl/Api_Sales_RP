@@ -25,14 +25,14 @@ app.set('port', process.env.PORT || 3000);  //puerto
 
 // ==== MIDDLEWARE =====
 
-app.use(bodyParser.json());
+    app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.urlencoded({ extended: false }));    //para limitar archivos que se envian por la url como  imagenes etc
 
-app.use(expressValidator()); //Valida los de entrada desde la url 
+    app.use(expressValidator());    //Valida los de entrada desde la url 
 
-const BTRoutes = require('./app/routes/appRoutes');
-app.use('/', BTRoutes);
+    const BTRoutes = require('./app/routes/appRoutes');
+    app.use('/', BTRoutes);
 
 
 /**
@@ -43,5 +43,5 @@ app.use('/', BTRoutes);
 
 // ======== launch app ========
 app.listen(app.get('port'), () => {
-    console.log(`server on port ${app.get('port')}`);
+    console.log(`Running on port ${app.get('port')}`);
 });
