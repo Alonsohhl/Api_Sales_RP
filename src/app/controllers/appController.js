@@ -1,12 +1,10 @@
 const controller = {};
 
-const jwt = require("jsonwebtoken")
+const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator/check');
- 
+const { empModel } = require
 
-var pool=require("./db/connection")
-
-
+// var pool = require('./db/connection')
 
 /**
  * !descinebtar estos
@@ -16,23 +14,20 @@ var pool=require("./db/connection")
 // var PropuestasModel = require('./db/propuestas.js').Propuestas;
 
 controller.index = (req, res) => {
+  res.render('index');
+  console.log('Carga completa');
+};
 
-    res.render('index');
-    console.log('Carga completa');
-    
-    };
-
-/* ================= Insertar Empresa ===================*/
+/* ================= Insertar Empresa =================== */
 controller.insEmp = (req, res) => { //
-    console.log("Ins emp")
-    // var newEmp = new EmpresasModel(req.body);
-    // // newEmp._id=new mongoose.Types.ObjectId();
-    // newEmp.save(function (err) {
-    // if (err) return res.status(500).send({ error: err });
-    // return res.send("Ingresado Correctamente");
-    
-    // });
+  console.log('Ins emp')
+  // var newEmp = new EmpresasModel(req.body);
+  // // newEmp._id=new mongoose.Types.ObjectId();
+  // newEmp.save(function (err) {
+  // if (err) return res.status(500).send({ error: err });
+  // return res.send("Ingresado Correctamente");
 
+  // });
 };
 // /* ================= Ingreso de Empresa->Propuesta ===================*/
 // controller.insProp = (req, res) => {
@@ -53,7 +48,7 @@ controller.insEmp = (req, res) => { //
 //                 _id: new mongoose.Types.ObjectId(),
 //                 empresa: foundObject,
 //                 propNombre:'propuestilla' ,
-                
+
 //               });
 //               propuesta.save(function (err) {
 //                 if (err) return handleError(err);
@@ -63,8 +58,6 @@ controller.insEmp = (req, res) => { //
 //                 // thats it!
 //               });
 
-
-            
 //         });
 //     }
 // }
@@ -87,14 +80,14 @@ controller.insEmp = (req, res) => { //
 //         //     message: "Login",
 //         //     user
 //         //   });
-        
+
 //         // bcrypt.compare(req.body.password, user[0].password, (err, result) => {
 //         //   if (err) {
 //         //     return res.status(401).json({
 //         //       message: "Usuario no Valido"
 //         //     });
 //         //   }
-        
+
 //         if (req.body.usuPassword != user[0].usuPassword) {
 //             return res.status(401).json({
 //                 message: "Usuario no Valido"
@@ -158,7 +151,6 @@ controller.insEmp = (req, res) => { //
 //     req.checkBody('usuPassword',   'Password invalido').notEmpty()
 //     // req.checkBody('usuIntereses',  'Intereses invalido').optional().isString();
 
-
 //     UsuariosModel.findOne( {       usuUsuario:req.body.usuUsuario.toLowerCase(),
 //                                                usuPassword:req.body.usuPassword,
 //                                     },
@@ -169,7 +161,7 @@ controller.insEmp = (req, res) => { //
 //                                             {
 //                                                 return res.send({log:true})
 //                                             }else //res.send(res.status(500));
-//                                                 return res.send({log:false});             // res.status(200).send(foundObject);        
+//                                                 return res.send({log:false});             // res.status(200).send(foundObject);
 //                                         });
 // }
 // /* ================= Ingreso de Usuario ===================*/
@@ -182,8 +174,8 @@ controller.insEmp = (req, res) => { //
 //         var newEmp = new UsuariosModel(req.body);
 //         newEmp.save(function (err) {
 //         if (err){
-//             console.dir(err) 
-//             return res.status(422).send({ error: err}); } 
+//             console.dir(err)
+//             return res.status(422).send({ error: err}); }
 
 //         return  res.status(201).send("Ingresado Correctamente");
 //         });
@@ -195,7 +187,7 @@ controller.insEmp = (req, res) => { //
 
 //     req.checkBody('_id'         ,'ID Usuario invalido').notEmpty().isString();
 //     req.checkBody('propuesta'   ,'ID Propuesta invalido').notEmpty().isString();
-    
+
 
 //     var errors = req.validationErrors();
 //     if (errors) {
@@ -211,7 +203,7 @@ controller.insEmp = (req, res) => { //
 //                 console.log("Ingresado correctamente");
 //                 res.send(foundObject);
 //                 });
-                
+
 //         });
 //     }
 // }
@@ -221,16 +213,16 @@ controller.insEmp = (req, res) => { //
 
 //     /*    req.checkBody('_id'         ,'ID Usuario invalido').notEmpty().isString();
 //         req.checkBody('propuesta'   ,'ID Propuesta invalido').notEmpty().isString();
-        
-    
+
+
 //         var errors = req.validationErrors();
 //         if (errors) {
 //             res.send(errors);
 //             return;
 //         } else {
-//       */      
+//       */
 //             //UsuariosModel.findOne({_id: req.body._id},function (err,foundObject) {
-          
+
 //     /*        UsuariosModel.find({},function (err,foundObject) {
 //                 console.log(foundObject)
 //                 EmpresasModel.populate(foundObject, {path: "propuestas"},function(err, libros){
@@ -241,8 +233,8 @@ controller.insEmp = (req, res) => { //
 //                     EmpresasModel.populate(foundObject, {path: "propuestas"},function(err, libros){
 //                         res.status(200).send(libros);
 //                     });
-    
-             
+
+
 //                 /*
 //                 if (err) return res.status(500).send({ error: err });
 //                 if (!foundObject) return res.status(500).send({ error: "Usuario no encontrado" });
@@ -252,17 +244,15 @@ controller.insEmp = (req, res) => { //
 //                         console.log("Ingresado correctamente");
 //                         res.send(foundObject);
 //                     });*/
-                    
+
 //                 });
 //         //}
 //     }
 
-
 // controller.update = (req, res) => { // Actualizar Valor
 
-
 // };
-    
 
 
-module.exports = controller; 
+
+module.exports = controller;

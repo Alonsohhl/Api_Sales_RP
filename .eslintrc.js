@@ -1,6 +1,6 @@
 module.exports = {
     "env": {
-        "es6": true,
+        // "es6": true,
         "node": true
     },
     "extends": "standard",
@@ -9,9 +9,10 @@ module.exports = {
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
+        // "ecmaVersion": 2018,
+        // "sourceType": "module"
     },
     "rules": {
+        "semi": 0
     }
 };

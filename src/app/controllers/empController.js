@@ -1,7 +1,7 @@
-const cliController = {};
+const empController = {};
 var pool = require('../db/connection')
 
-cliController.insert = async (req, res) => {
+empController.insert = async (req, res) => {
   const { body: { reqEmp } } = req;
 
   if (reqEmp) {
@@ -13,8 +13,9 @@ cliController.insert = async (req, res) => {
       res.send('Error:  ' + err.sqlMessage)
       throw (err)
     })
-  console.log('Cli Inserted')
-  res.send('Cli Insert')
+  console.log('Emp Inserted')
+  res.send('Emp Insert')
+  //   res.end();
 };
 
-module.exports = cliController;
+module.exports = empController;
