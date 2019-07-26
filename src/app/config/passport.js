@@ -14,15 +14,15 @@ passport.use(new LocalStrategy(
   // Our user will sign in using an email, rather than a "username"
   {
     // usernameField: 'email'
-    usernameField: 'user[email]',
-    passwordField: 'user[password]'
+    usernameField: 'user[Nom_Usu]',
+    passwordField: 'user[Pass_Usu]'
   },
-  function (email, password, done) {
+  function (usuario, password, done) {
     console.dir(db.t01fefm)
     // console.log("TCL: db.user", db.User)
     db.t01fefm.findOne({
       where: {
-        Correo_EmpFar: email
+        Nom_Usu: usuario
       }
     }).then(function (dbUser) {
       // If there's no user with the given email

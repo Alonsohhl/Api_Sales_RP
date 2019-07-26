@@ -18,7 +18,7 @@ pool.getConnection(function (err, connection) {
     connection.release();
   }
   console.log('Mysql Conected..')
-  // TODO arreglar este codigo no funciona tenemos q borrar el releae y volvelro promesa
+
   // connection.query('SELECT something FROM sometable', function (error, results, fields) {
   //   When done with the connection, release it.
   //   connection.release();

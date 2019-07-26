@@ -16,11 +16,13 @@ module.exports = function (sequelize, DataTypes) {
     },
     Cod_Sucur: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
     },
     Cod_Cargo: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 'user'
     },
     Nom_EmpFar: {
       type: DataTypes.STRING,
@@ -36,11 +38,12 @@ module.exports = function (sequelize, DataTypes) {
     },
     Tel_EmpFar: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true,
+      defaultValue: ''
     },
     Dir_EmpFar: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     Correo_EmpFar: {
       type: DataTypes.STRING,
@@ -63,7 +66,8 @@ module.exports = function (sequelize, DataTypes) {
     },
     Estado: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: '0'
     }
   });
   // eslint-disable-next-line
