@@ -27,8 +27,6 @@ router.post('/login', auth.optional, (req, res, next) => {
     });
   }
   return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-  // console.log("TCL: passportUser", passportUser)
-  // console.log("TCL: info", info)
     if (err) {
       return next(err);
     }
@@ -37,7 +35,7 @@ router.post('/login', auth.optional, (req, res, next) => {
       user.token = passportUser.generateJWT();
       return res.json({ user: user.toAuthJSON() });
     }
-    res.json({ Error: info })
+    res.status(400).json({ Error: info })
   })(req, res, next);
 });
 
@@ -65,6 +63,36 @@ router.post('/register', auth.optional, (req, res) => {
     console.log(err);
     res.json(err);
   });
+});
+
+// Get the user of a provided token, if valid
+router.get('/session', auth.required, (req, res) => {
+  console.dir(auth)
+  return res.sendStatus(200);
+  // const { payload: { id } } = req;
+  // console.log("TCL: id", id)
+
+  // return db.t01fefm.findByPk(id)
+  //   .then((user) => {
+  //     if (!user) {
+  //       return res.sendStatus(400);
+  //     }
+
+  //     return res.json({ user: user.toAuthJSON() });
+  //   });
+});
+
+router.get('/current', auth.required, (req, res) => {
+  const { payload: { id } } = req;
+
+  return db.t01fefm.findById(id)
+    .then((user) => {
+      if (!user) {
+        return res.sendStatus(400);
+      }
+
+      return res.json({ user: user.toAuthJSON() });
+    });
 });
 
 module.exports = router;

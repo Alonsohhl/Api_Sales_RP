@@ -9,13 +9,49 @@ exports.appCustomValidator = {
       .normalizeEmail()
       .withMessage('Tiene que ser un correo valido'),
     check('usuPassword')
-      .isLength({ min: 5 })
+      .not().isEmpty()
       .withMessage('Debe ser mayor de 5 caracteres'),
     check('usuNombre')
-      .isLength({ min: 5 })
+      .not().isEmpty()
       .withMessage('Debe ser mayor de 5 caracteres'),
     check('usuCodAlumno')
-      .isLength({ min: 5 })
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres')
+  ]
+
+};
+
+exports.Validator = {
+  VALIDATE_PRODUCT_INSERT: [
+    check('Nom_Medi')
+      .not().isEmpty()
+      .withMessage('Tiene que ser un correo valido'),
+    check('Desc_Medi')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('Precio_Com')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('Precio_Unitario')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('RazonSoc_Prov')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('Fecha_Ing')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('Fecha_Ven')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('Stock_Min')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('Stock_Max')
+      .not().isEmpty()
+      .withMessage('Debe ser mayor de 5 caracteres'),
+    check('Pres_Medi')
+      .not().isEmpty()
       .withMessage('Debe ser mayor de 5 caracteres')
   ]
 

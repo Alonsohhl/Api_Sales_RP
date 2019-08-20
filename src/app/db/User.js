@@ -50,7 +50,8 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       validate: {
         isEmail: true
-      }
+      },
+      unique: true
     },
     Dni_EmpFar: {
       type: DataTypes.STRING,
@@ -58,7 +59,8 @@ module.exports = function (sequelize, DataTypes) {
     },
     Nom_Usu: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     Pass_Usu: {
       type: DataTypes.STRING,
@@ -109,8 +111,9 @@ module.exports = function (sequelize, DataTypes) {
 
   User.prototype.toAuthJSON = function () {
     return {
-      _id: this._id,
-      email: this.email,
+      id: this.id,
+      user: this.Nom_EmpFar.concat(' ', this.App_EmpFar),
+      email: this.Correo_EmpFar,
       token: this.generateJWT()
     };
   };

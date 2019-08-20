@@ -8,10 +8,8 @@ const env = process.env.NODE_ENV || 'development';
 // eslint-disable-next-lines
 // const config = require(__dirname + '/../config/config.json')[env];
 const config = require(path.join(__dirname, '../config/config.json'))[env];
-console.log('->' + config);
 const db = {};
 
-console.dir(config);
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);

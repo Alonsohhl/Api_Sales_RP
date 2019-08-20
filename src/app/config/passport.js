@@ -18,8 +18,6 @@ passport.use(new LocalStrategy(
     passwordField: 'user[Pass_Usu]'
   },
   function (usuario, password, done) {
-    console.dir(db.t01fefm)
-    // console.log("TCL: db.user", db.User)
     db.t01fefm.findOne({
       where: {
         Nom_Usu: usuario
@@ -27,13 +25,12 @@ passport.use(new LocalStrategy(
     }).then(function (dbUser) {
       // If there's no user with the given email
       if (!dbUser) {
-      // console.log("TCL: dbUser")
         return done(null, false, {
-          message: 'Incorrect email.'
+          message: 'Usuario Incorrecto.'
         });
       } else if (!dbUser.validPassword(password)) { // If there is a user with the given email, but the password the user gives us is incorrect
         return done(null, false, {
-          message: 'Incorrect password'
+          message: 'Password Incorrecto'
         });
       }
       // If none of the above, return the user

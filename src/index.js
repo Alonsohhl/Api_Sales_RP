@@ -28,15 +28,16 @@ app.use((req, res, next) => {
 /* ==== SETTINGS ===== */
 app.set('port', process.env.PORT || 3000); // port
 // Configure isProduction variable
-const isProduction = process.env.NODE_ENV === 'production';
-if (!isProduction) {
-//   app.use(errorHandler());
-  console.log('es Desarrollo pe');
-}
+// const isProduction = process.env.NODE_ENV === 'production';
+// if (!isProduction) {
+// //   app.use(errorHandler());
+//   console.log('es Desarrollo pe');
+// }
 
 // ==== MIDDLEWARE =====
 app.use(require('morgan')('dev'));// Use morgan to log
 // app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+// app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false })); // para limitar archivos que se envian por la url como  imagenes etc
 app.use(expressValidator()); // Valida los de entrada desde la url
