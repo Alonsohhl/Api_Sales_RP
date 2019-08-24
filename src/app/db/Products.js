@@ -79,6 +79,7 @@ module.exports = function (sequelize, DataTypes) {
   Products.associate = function (models) {
     // models.T01FMED.hasOne(models.T01FCAT);
     models.T01FMED.belongsTo(models.T01FCAT, { foreignKey: { allowNull: false } });
+    // models.T01FMED.BelongsToMany(models.T01FPRO, { foreignKey: { allowNull: false } });
   };
 
   return Products;

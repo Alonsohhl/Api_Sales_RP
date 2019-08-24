@@ -2,6 +2,8 @@
 const router = require('express').Router();
 const auth = require('../auth');
 var db = require('../../db');
+const Sequelize = require('sequelize');
+const op = Sequelize.Op;
 
 router.post('/insert', auth.optional, (req, res) => {
   // console.dir(auth)
@@ -75,6 +77,34 @@ router.get('/getcat/:limit', auth.optional, (req, res) => {
     limit: 10,
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   }).then(function (data) {
+    res.json(data);
+  }).catch(function (err) {
+    // if (err.errors[0].message) {
+    //   res.status(422).json({ error: err.errors[0].message });
+    // }
+    res.json(err);
+    // return res.end();
+  });
+});
+
+router.get('/getproveedores/', auth.optional, (req, res) => {
+  var data = req.query;
+  var varLike = '&';
+  if (data.razSoc) {
+    varLike = data.razSoc + '%'
+  }
+
+  console.log('TCL: where')
+  db.T01FPRO.findAll({
+    limit: 10,
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    where: {
+      RazonSoc_Prov: {
+        [op.like]: varLike
+      }
+    }
+  }).then(function (data) {
+    console.log("TCL: data", data)
     res.json(data);
   }).catch(function (err) {
     // if (err.errors[0].message) {
