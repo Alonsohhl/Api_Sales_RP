@@ -21,7 +21,8 @@ router.post('/insert', auth.optional, (req, res) => {
     Stock_Min: product.Stock_Min,
     Stock_Max: product.Stock_Max,
     Pres_Medi: product.Pres_Medi,
-    T01FCATId: product.T01FCATId
+    T01FCATId: product.T01FCATId,
+    T01FPROId: product.T01FPROId
   }).then(function () {
     res.json({ status: 'Producto Ingresado' });
     res.end();
