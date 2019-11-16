@@ -5,6 +5,10 @@ var db = require('../../db');
 const Sequelize = require('sequelize');
 const op = Sequelize.Op;
 
+// router.post('/categorieInsert', auth.optional, (req, res) => {
+// db.T01FMED.findAll({
+// })
+
 router.post('/insert', auth.optional, (req, res) => {
   // console.dir(auth)
 
@@ -49,14 +53,23 @@ router.post('/insert', auth.optional, (req, res) => {
   // return res.sendStatus(200);
 });
 
-router.get('/getall/:limit', auth.optional, (req, res) => {
-// const { body: { product } } = req;
+router.get('/getall/:limit?/:razSoc?', auth.optional, (req, res) => {
+  var varLike = '';
+  if (req.params.razSoc) {
+    varLike = req.params.razSoc
+  }
   var limit = 10;
   if (req.params.limit) {
     limit = parseInt(req.params.limit)
   }
   db.T01FMED.findAll({
-    limit: limit
+    limit: limit,
+    where: {
+      Nom_Medi: {
+        [op.substring]: varLike
+      }
+
+    }
   }).then(function (data) {
     res.json(data);
     // res.end();
@@ -68,23 +81,40 @@ router.get('/getall/:limit', auth.optional, (req, res) => {
     // return res.end();
   });
 });
+router.get('/getProdByCodOrDesc/:razSocOrId?/', auth.optional, (req, res) => {
+  db.T01FMED.findAll({
+    limit: 10,
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    where: {
+      [op.or]: [
+        {
+          Nom_Medi: {
+            [op.substring]: req.params.razSocOrId
+          }
+        },
+        {
+          id: {
+            [op.substring]: req.params.razSocOrId
+          }
+        }
+      ]
+
+    }
+  }).then(function (data) {
+    res.json(data);
+  }).catch(function (err) {
+    res.json(err);
+  });
+});
 
 router.get('/getcat/:limit', auth.optional, (req, res) => {
-  // var limit = 10;
-  // if (req.params.limit) {
-  //   limit = 10
-  // }
   db.T01FCAT.findAll({
     limit: 10,
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   }).then(function (data) {
     res.json(data);
   }).catch(function (err) {
-    // if (err.errors[0].message) {
-    //   res.status(422).json({ error: err.errors[0].message });
-    // }
     res.json(err);
-    // return res.end();
   });
 });
 
@@ -105,7 +135,6 @@ router.get('/getproveedores/', auth.optional, (req, res) => {
       }
     }
   }).then(function (data) {
-    console.log("TCL: data", data)
     res.json(data);
   }).catch(function (err) {
     // if (err.errors[0].message) {

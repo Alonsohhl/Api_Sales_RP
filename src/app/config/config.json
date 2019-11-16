@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "Panam2019",
+    "password": "Panam2014",
     "database": "DB1FARM",
-    "host": "35.247.253.32",
+    "host": "35.198.63.188",
     "dialect": "mysql",
     "operatorsAliases": false
   },
