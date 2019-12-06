@@ -53,6 +53,52 @@ router.post('/insert', auth.optional, (req, res) => {
   // return res.sendStatus(200);
 });
 
+router.post('/insertCategory', auth.optional, (req, res) => {
+  const { body: { categoria } } = req;
+  db.T01FCAT.create({
+    Cod_Cat: categoria.Cod_Cat,
+    Desc_Cat: categoria.Desc_Cat
+  }).then(function () {
+    res.json({ status: 'Categoria Ingresada' });
+    res.end();
+  }).catch(function (err) {
+    res.status(400).send({ error: err });
+  });
+});
+
+router.post('/updateCategory', auth.optional, (req, res) => {
+  const { body: { category } } = req;
+  // res.json({ status: 'Categoria No Actualizada' });
+  db.T01FCAT.update({ Desc_Cat: category.Desc_Cat }, {
+    where: {
+      id: category.id
+    }
+  }).then((x) => {
+    if (x < 1) {
+      res.status(400).send({ error: 'registro NO valido ' });
+    } else {
+      console.log(x);
+      res.json({ status: 'Categoria Actualizada' });
+    }
+  });
+});
+router.post('/deleteCategory', auth.optional, (req, res) => {
+  const { body: { category } } = req;
+
+  db.T01FCAT.update({ activo: false }, {
+    where: {
+      id: category.id
+    }
+  }).then((x) => {
+    if (x < 1) {
+      res.status(400).send({ error: 'registro NO valido ' });
+    } else {
+      console.log(x);
+      res.json({ status: 'Categoria Eliminada' });
+    }
+  });
+});
+
 router.get('/getall/:limit?/:razSoc?', auth.optional, (req, res) => {
   var varLike = '';
   if (req.params.razSoc) {
@@ -110,7 +156,10 @@ router.get('/getProdByCodOrDesc/:razSocOrId?/', auth.optional, (req, res) => {
 router.get('/getcat/:limit', auth.optional, (req, res) => {
   db.T01FCAT.findAll({
     limit: 10,
-    attributes: { exclude: ['createdAt', 'updatedAt'] }
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    where: {
+      activo: true
+    }
   }).then(function (data) {
     res.json(data);
   }).catch(function (err) {
