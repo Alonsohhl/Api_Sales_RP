@@ -3,46 +3,92 @@ const passport = require('passport')
 const router = require('express').Router()
 const auth = require('../auth')
 var db = require('../../db')
-
+const Sequelize = require('sequelize')
+const op = Sequelize.Op
 // const Users = mongoose.model('Users');
 
 // POST login route (optional, everyone has access)
 // TODO Agregar JWT key y validar
-router.post('/login', auth.optional, (req, res, next) => {
-  const {
-    body: { user }
-  } = req
-
-  if (!user || !user.Nom_Usu) {
-    return res.status(422).json({
-      errors: {
-        email: 'is required'
-      }
-    })
-  }
-
-  if (!user.Pass_Usu) {
-    return res.status(422).json({
-      errors: {
-        password: 'is required'
-      }
-    })
-  }
-  return passport.authenticate(
-    'local',
-    { session: false },
-    (err, passportUser, info) => {
-      if (err) {
-        return next(err)
-      }
-      if (passportUser) {
-        const user = passportUser
-        user.token = passportUser.generateJWT()
-        return res.json({ user: user.toAuthJSON() })
-      }
-      res.status(400).json({ Error: info })
+router.post('/login', (req, res, next) => {
+  passport.authenticate('login', (err, user, info) => {
+    console.log(info)
+    if (err) {
+      console.log(err)
+      // res.status(500).send(err)
+      res.status(400).send(err)
     }
-  )(req, res, next)
+    if (info != undefined) {
+      res.status(400).send(info)
+    } else {
+      req.logIn(user, (err) => {
+        db.t01fefm
+          .findOne({
+            where: {
+              Nom_Usu: user.Nom_Usu
+            }
+          })
+          .then((userPassport) => {
+            // const token = jwt.sign({ id: user.username }, jwtSecret.secret)
+            // const user = userPassport
+            // user.token = passportUser.generateJWT()
+
+            //       return res.json({ user: user.toAuthJSON() })
+
+            // res.status(200).send({
+            //   user: {
+            //     auth: true,
+            //     token: userPassport.generateJWT(),
+            //     message: 'user found & logged in',
+            //     id: userPassport,
+            //     name: response.data.user.user,
+            //   }
+            // })
+            res.status(200).send({
+              user: userPassport.toAuthJSON()
+            })
+          })
+      })
+    }
+  })(req, res, next)
+
+  // const {
+  //   body: { user }
+  // } = req
+
+  // if (!user || !user.Nom_Usu) {
+  //   return res.status(422).json({
+  //     errors: {
+  //       email: 'is required'
+  //     }
+  //   })
+  // }
+
+  // if (!user.Pass_Usu) {
+  //   return res.status(422).json({
+  //     errors: {
+  //       password: 'is required'
+  //     }
+  //   })
+  // }
+  // return passport.authenticate(
+  //   'login',
+  //   { session: false },
+  //   (err, passportUser, info) => {
+  //     if (err) {
+  //       return next(err)
+  //     }
+  //     if (info != undefined) {
+  //       console.log(info.message)
+  //       return next(info.message)
+  //     }
+  //     if (passportUser) {
+  //       const user = passportUser
+  //       user.token = passportUser.generateJWT()
+  //       return res.json({ user: user.toAuthJSON() })
+  //     }
+  //     res.status(400).json({ Error: info })
+  //   }
+  // )(req, res, next)
 })
 
 router.post('/register', auth.optional, (req, res) => {
@@ -108,25 +154,48 @@ router.get('/current', auth.required, (req, res) => {
 })
 
 router.get('/find', auth.required, (req, res) => {
-  const {
-    payload: { id }
-  } = req
+  const queryID = req.query.id ? req.query.id : null
+  const queryCOD = req.query.cod ? req.query.cod : null
+  const queryLimit =
+    req.query.queryLimit && req.query.queryLimit < 1000
+      ? req.query.queryLimit
+      : 10
 
   db.t01fefm
     .findAll({
-      limit: 10,
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      limit: queryLimit,
+      attributes: { exclude: ['createdAt', 'updatedAt', 'Pass_Usu'] },
       where: {
         [op.or]: [
+          // {
+          //   [op.or]: [
+          //     {
+          //       id: queryID
+          //     },
+          //     {
+          //       Cod_EmpFar: {
+          //         [op.substring]: queryCOD
+          //       }
+          //     }
+          //   ]
+          // },
           {
-            Nom_Medi: {
-              [op.substring]: req.params.razSocOrId
-            }
+            [op.and]: [
+              queryID,
+              {
+                id: queryID
+              }
+            ]
           },
           {
-            id: {
-              [op.substring]: req.params.razSocOrId
-            }
+            [op.and]: [
+              queryCOD,
+              {
+                Cod_EmpFar: {
+                  [op.substring]: queryCOD
+                }
+              }
+            ]
           }
         ]
       }

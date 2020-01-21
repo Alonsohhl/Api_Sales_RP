@@ -1,9 +1,10 @@
 // const mongoose = require('mongoose');
 const passport = require('passport')
-// const LocalStrategy = require('passport-local');
+ExtractJWT = require('passport-jwt').ExtractJwt
+JWTstrategy = require('passport-jwt').Strategy
 var LocalStrategy = require('passport-local').Strategy
-// We will need the models folder to check passport agains
 var db = require('../db')
+const { JWT_SECRET } = require('../config')
 
 // Telling passport we want to use a Local Strategy. In other words,
 // we want login with a username/email and password
@@ -11,12 +12,13 @@ var db = require('../db')
 // module.exports = function (passport)
 
 passport.use(
+  'login',
   new LocalStrategy(
-    // Our user will sign in using an email, rather than a "username"
+    // nuestro usuario usara valores propios para el login
     {
-      // usernameField: 'email'
       usernameField: 'user[Nom_Usu]',
-      passwordField: 'user[Pass_Usu]'
+      passwordField: 'user[Pass_Usu]',
+      session: false
     },
     function(usuario, password, done) {
       db.t01fefm
@@ -29,7 +31,7 @@ passport.use(
           // If there's no user with the given email
           if (!dbUser) {
             return done(null, false, {
-              message: 'Usuario Incorrecto.'
+              message: 'Usuario Incorrecto'
             })
           } else if (!dbUser.validPassword(password)) {
             // If there is a user with the given email, but the password the user gives us is incorrect
@@ -37,12 +39,41 @@ passport.use(
               message: 'Password Incorrecto'
             })
           }
-          // If none of the above, return the user
+          // Usuario correcto encontrado
           return done(null, dbUser)
         })
         .catch(done)
     }
   )
+)
+
+const opts = {
+  jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('JWT'),
+  secretOrKey: JWT_SECRET
+}
+
+passport.use(
+  'jwt',
+  new JWTstrategy(opts, (jwt_payload, done) => {
+    try {
+      User.findOne({
+        where: {
+          username: jwt_payload.id
+        }
+      }).then((user) => {
+        if (user) {
+          console.log('user found in db in passport')
+          // note the return removed with passport JWT - add this return for passport local
+          done(null, user)
+        } else {
+          console.log('user not found in db')
+          done(null, false)
+        }
+      })
+    } catch (err) {
+      done(err)
+    }
+  })
 )
 
 //

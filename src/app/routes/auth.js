@@ -1,17 +1,20 @@
-const jwt = require('express-jwt');
-const passportJWT = require('passport-jwt');
-const JWTStrategy = passportJWT.Strategy;
-const ExtractJWT = passportJWT.ExtractJwt;
-var db = require('../db');
+const jwt = require('express-jwt')
+const passportJWT = require('passport-jwt')
+const JWTStrategy = passportJWT.Strategy
+const ExtractJWT = passportJWT.ExtractJwt
+var db = require('../db')
+const passport = require('passport')
 
 const getTokenFromHeaders = (req) => {
-  const { headers: { authorization } } = req;
+  const {
+    headers: { authorization }
+  } = req
 
   if (authorization && authorization.split(' ')[0] === 'Token') {
-    return authorization.split(' ')[1];
+    return authorization.split(' ')[1]
   }
-  return null;
-};
+  return null
+}
 
 const auth = {
   required: jwt({
@@ -24,8 +27,9 @@ const auth = {
     userProperty: 'payload',
     getToken: getTokenFromHeaders,
     credentialsRequired: false
-  })
-};
+  }),
+  protected: passport.authenticate('jwt', { session: false })
+}
 
 // const valid = new JWTStrategy({
 //   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
@@ -41,4 +45,4 @@ const auth = {
 // )
 
 // module.exports = { auth, valid };
-module.exports = auth;
+module.exports = auth

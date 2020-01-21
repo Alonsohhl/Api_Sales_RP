@@ -8,30 +8,87 @@ const passport = require('passport')
 
 router.post('/insert', auth.optional, (req, res) => {
   const {
-    body: { product }
+    body: { cliente }
   } = req
-  db.T01FMED.create({
-    Nom_Medi: product.Nom_Medi,
-    Desc_Medi: product.Desc_Medi,
-    Cant_Medi: product.Cant_Medi,
-    Precio_Com: product.Precio_Com,
-    Precio_Unitario: product.Precio_Unitario,
-    RazonSoc_Prov: product.RazonSoc_Prov,
-    Fecha_Ing: product.Fecha_Ing,
-    Fecha_Ven: product.Fecha_Ven,
-    Stock_Min: product.Stock_Min,
-    Stock_Max: product.Stock_Max,
-    Pres_Medi: product.Pres_Medi,
-    T01FCATId: product.T01FCATId,
-    T01FPROId: product.T01FPROId
-  })
+  db.t01fcli
+    .create({
+      Dni_Cli: cliente.Dni_Cli,
+      Nom_Cli: cliente.Nom_Cli,
+      App_Cli: cliente.App_Cli,
+      Apm_Cli: cliente.Apm_Cli,
+      Correo_Cli: cliente.Correo_Cli,
+      Sexo_Cli: cliente.Sexo_Cli
+    })
     .then(function() {
-      res.json({ status: 'Producto Ingresado' })
+      res.status(200).send({ status: 'Cliente Ingresado' })
       res.end()
     })
     .catch(function(err) {
       res.status(400).send({ error: err })
     })
+})
+
+router.post('/update', auth.optional, (req, res) => {
+  const {
+    body: { cliente }
+  } = req
+  console.log('TCL: cliente', cliente)
+  !cliente.id ? (cliente.id = null) : null
+  db.t01fcli
+    .findOrCreate({
+      where: { id: cliente.id },
+      defaults: {
+        Dni_Cli: cliente.Dni_Cli,
+        Nom_Cli: cliente.Nom_Cli,
+        App_Cli: cliente.App_Cli,
+        Apm_Cli: cliente.Apm_Cli,
+        Correo_Cli: cliente.Correo_Cli,
+        Sexo_Cli: cliente.Sexo_Cli
+      }
+    })
+
+    .then(([user, created]) => {
+      if (created) {
+        // created will be true if a new user was created
+        res.status(200).send({ msg: 'Cliente creado' })
+      }
+      return user
+        .update({
+          id: cliente.id,
+          Dni_Cli: cliente.Dni_Cli,
+          Nom_Cli: cliente.Nom_Cli,
+          App_Cli: cliente.App_Cli,
+          Apm_Cli: cliente.Apm_Cli,
+          Correo_Cli: cliente.Correo_Cli,
+          Sexo_Cli: cliente.Sexo_Cli
+        })
+        .then(() => {
+          res.status(200).send({ msg: 'Cliente actualizado' })
+        })
+
+      console.log('TCL: status')
+    })
+    .catch(function(err) {
+      console.log('TCL: err', err)
+      res.status(400).send({ error: err })
+      console.log('TCL: status')
+    })
+
+  // ({
+  //   Dni_Cli: cliente.Dni_Cli,
+  //   Nom_Cli: cliente.Nom_Cli,
+  //   App_Cli: cliente.App_Cli,
+  //   Apm_Cli: cliente.Apm_Cli,
+  //   Correo_Cli: cliente.Correo_Cli,
+  //   Sexo_Cli: cliente.Sexo_Cli
+  // })
+  // .then(function() {
+  //   res.status(200).send({ status: 'Cliente Ingresado' })
+  //   res.end()
+  // })
+  // .catch(function(err) {
+  //   res.status(400).send({ error: err })
+  // })
 })
 
 router.post('/insertCategory', auth.optional, (req, res) => {
@@ -205,46 +262,45 @@ router.get('/current', auth.required, (req, res) => {
   //     return res.json({ user: user.toAuthJSON() });
   //   });
 })
-router.get(
-  '/find',
-  // passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    const {
-      body: { id, Dni_Cli }
-    } = req
-    if (id === undefined && Dni_Cli === undefined) {
-      auxId = ''
-      auxDni_Cli = ''
-    } else {
-      auxId = id
-      auxDni_Cli = Dni_Cli
-    }
+router.get('/find', (req, res) => {
+  // const {
+  //   body: { id, Dni_Cli }
+  // } = req
+  id = req.query.id
+  Dni_Cli = req.query.Dni_Cli
 
-    db.t01fcli
-      .findAll({
-        limit: 10,
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-        where: {
-          [op.or]: [
-            {
-              id: {
-                [op.substring]: auxId
-              }
-            },
-            {
-              Dni_Cli: {
-                [op.substring]: auxDni_Cli
-              }
-            }
-          ]
-        }
-      })
-      .then(function(data) {
-        res.json(data)
-      })
-      .catch(function(err) {
-        res.json(err)
-      })
+  if (id === undefined && Dni_Cli === undefined) {
+    auxId = ''
+    auxDni_Cli = ''
+  } else {
+    auxId = id
+    auxDni_Cli = Dni_Cli
   }
-)
+
+  db.t01fcli
+    .findAll({
+      limit: 10,
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: {
+        [op.or]: [
+          {
+            id: {
+              [op.substring]: auxId
+            }
+          },
+          {
+            Dni_Cli: {
+              [op.substring]: auxDni_Cli
+            }
+          }
+        ]
+      }
+    })
+    .then(function(data) {
+      res.json(data)
+    })
+    .catch(function(err) {
+      res.json(err)
+    })
+})
 module.exports = router
