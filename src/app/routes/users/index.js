@@ -155,7 +155,11 @@ router.get('/current', auth.required, (req, res) => {
 
 router.get('/find', auth.required, (req, res) => {
   const queryID = req.query.id ? req.query.id : null
-  const queryCOD = req.query.cod ? req.query.cod : null
+  const queryCOD = req.query.Cod_EmpFar
+    ? req.query.Cod_EmpFar
+    : req.query.id
+    ? null
+    : ''
   const queryLimit =
     req.query.queryLimit && req.query.queryLimit < 1000
       ? req.query.queryLimit
@@ -167,35 +171,13 @@ router.get('/find', auth.required, (req, res) => {
       attributes: { exclude: ['createdAt', 'updatedAt', 'Pass_Usu'] },
       where: {
         [op.or]: [
-          // {
-          //   [op.or]: [
-          //     {
-          //       id: queryID
-          //     },
-          //     {
-          //       Cod_EmpFar: {
-          //         [op.substring]: queryCOD
-          //       }
-          //     }
-          //   ]
-          // },
           {
-            [op.and]: [
-              queryID,
-              {
-                id: queryID
-              }
-            ]
+            id: queryID
           },
           {
-            [op.and]: [
-              queryCOD,
-              {
-                Cod_EmpFar: {
-                  [op.substring]: queryCOD
-                }
-              }
-            ]
+            Cod_EmpFar: {
+              [op.substring]: queryCOD
+            }
           }
         ]
       }
