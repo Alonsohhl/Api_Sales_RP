@@ -70,7 +70,7 @@ module.exports = function(sequelize, DataTypes) {
     Estado: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: '0'
+      defaultValue: 'ACTIVO'
     }
   })
   // eslint-disable-next-line

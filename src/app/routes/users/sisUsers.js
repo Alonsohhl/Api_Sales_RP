@@ -25,13 +25,8 @@ router.get('/getall/:limit?/:razSoc?', auth.optional, (req, res) => {
   })
     .then(function(data) {
       res.json(data)
-      // res.end();
     })
     .catch(function(err) {
-      // if (err.errors[0].message) {
-      //   res.status(422).json({ error: err.errors[0].message });
-      // }
       res.json(err)
-      // return res.end();
     })
 })

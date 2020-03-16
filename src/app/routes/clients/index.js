@@ -262,20 +262,21 @@ router.get('/current', auth.required, (req, res) => {
   //     return res.json({ user: user.toAuthJSON() });
   //   });
 })
-router.get('/find', (req, res) => {
-  // const {
-  //   body: { id, Dni_Cli }
-  // } = req
-  id = req.query.id
-  Dni_Cli = req.query.Dni_Cli
+router.get('/find', auth.optional, (req, res) => {
+  const queryID = req.query.id ? req.query.id : null
+  // const queryDNI = req.query.Dni_Cli ? req.query.Dni_Cli : null
+  // console.log('queryDNI', queryDNI)
+  const queryDNI = req.query.id
+    ? null
+    : req.query.Dni_Cli
+    ? req.query.Dni_Cli
+    : ''
 
-  if (id === undefined && Dni_Cli === undefined) {
-    auxId = ''
-    auxDni_Cli = ''
-  } else {
-    auxId = id
-    auxDni_Cli = Dni_Cli
-  }
+  // const queryDNI = req.query.Dni_Cli
+  //   ? req.query.Dni_Cli
+  //   : req.query.id
+  //   ? null
+  //   : ''
 
   db.t01fcli
     .findAll({
@@ -284,13 +285,11 @@ router.get('/find', (req, res) => {
       where: {
         [op.or]: [
           {
-            id: {
-              [op.substring]: auxId
-            }
+            id: queryID
           },
           {
             Dni_Cli: {
-              [op.substring]: auxDni_Cli
+              [op.substring]: queryDNI
             }
           }
         ]

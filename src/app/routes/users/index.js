@@ -153,7 +153,7 @@ router.get('/current', auth.required, (req, res) => {
   })
 })
 
-router.get('/find', auth.required, (req, res) => {
+router.get('/find', auth.optional, (req, res) => {
   const queryID = req.query.id ? req.query.id : null
   const queryCOD = req.query.Cod_EmpFar
     ? req.query.Cod_EmpFar
@@ -170,14 +170,19 @@ router.get('/find', auth.required, (req, res) => {
       limit: queryLimit,
       attributes: { exclude: ['createdAt', 'updatedAt', 'Pass_Usu'] },
       where: {
-        [op.or]: [
+        [op.and]: [
+          { Estado: 'ACTIVO' },
           {
-            id: queryID
-          },
-          {
-            Cod_EmpFar: {
-              [op.substring]: queryCOD
-            }
+            [op.or]: [
+              {
+                id: queryID
+              },
+              {
+                Cod_EmpFar: {
+                  [op.substring]: queryCOD
+                }
+              }
+            ]
           }
         ]
       }
@@ -189,4 +194,27 @@ router.get('/find', auth.required, (req, res) => {
       res.json(err)
     })
 })
+
+router.post('/delete', auth.optional, (req, res) => {
+  const queryID = req.query.id ? req.query.id : null
+
+  db.t01fefm
+    .update(
+      { Estado: 'ELIMINADO' },
+      {
+        where: {
+          id: queryID
+        }
+      }
+    )
+    .then((x) => {
+      if (x < 1) {
+        res.status(400).send({ error: 'registro NO valido ' })
+      } else {
+        console.log(x)
+        res.json({ status: 'Usuario Eliminado' })
+      }
+    })
+})
+
 module.exports = router
