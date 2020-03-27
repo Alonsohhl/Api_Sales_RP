@@ -9,12 +9,6 @@ const { JWT_SECRET } = require('../config')
 // Set it as export because we will need it required on the server
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('t01fefm', {
-    // The email cannot be null, and must be a proper email before creation
-    Cod_EmpFar: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
     Cod_Sucur: {
       type: DataTypes.STRING,
       allowNull: false,

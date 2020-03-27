@@ -40,6 +40,14 @@ module.exports = function(sequelize, DataTypes) {
         validate: {
           isIn: [['masculino', 'femenino']] // check the value is one of these
         }
+      },
+      estado: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'ACTIVO',
+        validate: {
+          isIn: [['ACTIVO', 'INACTIVO']] // check the value is one of these
+        }
       }
     },
     {

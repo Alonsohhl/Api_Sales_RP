@@ -129,26 +129,27 @@ router.post('/updateCategory', auth.optional, (req, res) => {
     }
   })
 })
-router.post('/deleteCategory', auth.optional, (req, res) => {
-  const {
-    body: { category }
-  } = req
+router.post('/delete', auth.optional, (req, res) => {
+  clientId = req.query.id ? req.query.id : null
+  if (!clientId) return res.status(400).send({ error: 'registro NO valido ' })
 
-  db.T01FCAT.update(
-    { activo: false },
-    {
-      where: {
-        id: category.id
+  db.t01fcli
+    .update(
+      { estado: 'INACTIVO' },
+      {
+        where: {
+          id: clientId
+        }
       }
-    }
-  ).then((x) => {
-    if (x < 1) {
-      res.status(400).send({ error: 'registro NO valido ' })
-    } else {
-      console.log(x)
-      res.json({ status: 'Categoria Eliminada' })
-    }
-  })
+    )
+    .then((exito) => {
+      if (!exito) {
+        res.status(400).send({ error: 'registro NO valido ' })
+      } else {
+        // console.dir(x)
+        res.json({ status: 'Cliente Eliminad@' })
+      }
+    })
 })
 
 router.get('/getall/:limit?/:razSoc?', auth.optional, (req, res) => {
@@ -264,42 +265,42 @@ router.get('/current', auth.required, (req, res) => {
 })
 router.get('/find', auth.optional, (req, res) => {
   const queryID = req.query.id ? req.query.id : null
-  // const queryDNI = req.query.Dni_Cli ? req.query.Dni_Cli : null
-  // console.log('queryDNI', queryDNI)
   const queryDNI = req.query.id
     ? null
     : req.query.Dni_Cli
     ? req.query.Dni_Cli
     : ''
 
-  // const queryDNI = req.query.Dni_Cli
-  //   ? req.query.Dni_Cli
-  //   : req.query.id
-  //   ? null
-  //   : ''
-
   db.t01fcli
     .findAll({
-      limit: 10,
+      limit: 50,
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       where: {
-        [op.or]: [
+        [op.and]: [
           {
-            id: queryID
+            estado: 'ACTIVO'
           },
           {
-            Dni_Cli: {
-              [op.substring]: queryDNI
-            }
+            [op.or]: [
+              {
+                id: queryID
+              },
+              {
+                Dni_Cli: {
+                  [op.substring]: queryDNI
+                }
+              }
+            ]
           }
         ]
       }
     })
     .then(function(data) {
+      if (!data[0]) res.status(404).json(err)
       res.json(data)
     })
     .catch(function(err) {
-      res.json(err)
+      res.status(404).json(err)
     })
 })
 module.exports = router

@@ -97,7 +97,7 @@ router.post('/register', auth.optional, (req, res) => {
   } = req
   db.t01fefm
     .create({
-      Cod_EmpFar: user.Cod_EmpFar,
+      // Cod_EmpFar: user.Cod_EmpFar,
       Nom_EmpFar: user.Nom_EmpFar,
       App_EmpFar: user.App_EmpFar,
       Apm_EmpFar: user.Apm_EmpFar,
@@ -106,7 +106,8 @@ router.post('/register', auth.optional, (req, res) => {
       Dni_EmpFar: user.Dni_EmpFar,
       Nom_Usu: user.Nom_Usu,
       Pass_Usu: user.Pass_Usu,
-      Estado: user.Estado
+      Estado: user.Estado,
+      Tel_EmpFar: user.Estado
     })
     .then(function() {
       // res.redirect(307, '/api/login');
@@ -155,8 +156,8 @@ router.get('/current', auth.required, (req, res) => {
 
 router.get('/find', auth.optional, (req, res) => {
   const queryID = req.query.id ? req.query.id : null
-  const queryCOD = req.query.Cod_EmpFar
-    ? req.query.Cod_EmpFar
+  const queryUsuario = req.query.Nom_Usu
+    ? req.query.Nom_Usu
     : req.query.id
     ? null
     : ''
@@ -178,8 +179,8 @@ router.get('/find', auth.optional, (req, res) => {
                 id: queryID
               },
               {
-                Cod_EmpFar: {
-                  [op.substring]: queryCOD
+                Nom_Usu: {
+                  [op.substring]: queryUsuario
                 }
               }
             ]
