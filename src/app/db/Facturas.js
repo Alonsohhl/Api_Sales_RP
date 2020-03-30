@@ -6,44 +6,31 @@ module.exports = function(sequelize, DataTypes) {
       Ser_Boleta: {
         type: DataTypes.STRING(4),
         allowNull: false,
-        unique: false
+        unique: false,
+        defaultValue: 'F001'
       },
       Num_Boleta: {
-        type: DataTypes.STRING(7),
+        type: DataTypes.STRING(8),
         allowNull: false,
         unique: false
       },
       Cod_Sucur: {
-        type: DataTypes.STRING(2),
+        type: DataTypes.INTEGER,
         allowNull: false,
         unique: false
       },
 
-      Nom_Usu: {
-        type: DataTypes.STRING(10),
-        allowNull: false,
-        unique: false
-      },
       Fecha_Boleta: {
         type: DataTypes.DATE,
         allowNull: false,
         unique: false
       },
-      Nom_Cli: {
-        type: DataTypes.STRING(15),
+      Fecha_Venc_Boleta: {
+        type: DataTypes.DATE,
         allowNull: false,
         unique: false
       },
-      App_Cli: {
-        type: DataTypes.STRING(15),
-        allowNull: false,
-        unique: false
-      },
-      Apm_Cli: {
-        type: DataTypes.STRING(15),
-        allowNull: false,
-        unique: false
-      },
+
       Sub_Total: {
         type: DataTypes.FLOAT(5, 2),
         allowNull: false,
@@ -62,13 +49,11 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     {
-      tableName: 'T01FCBO'
+      freezeTableName: true
     }
   )
   fac.associate = function(models) {
     models.T01FCBO.hasMany(models.T01FCBODET)
-    // models.T01FCAT.belongsTo(models.T01FMED);
-    // models.T01FCAT.hasOne(models.T01FMED);
-  } // EVITAR LA REDUNDANCIA
+  }
   return fac
 }

@@ -54,6 +54,8 @@ module.exports = function(sequelize, DataTypes) {
       tableName: 't01fcli'
     }
   )
-
+  cliente.associate = function(models) {
+    models.t01fcli.hasMany(models.T01FCBO, { foreignKey: 'id_Cliente' })
+  }
   return cliente
 }

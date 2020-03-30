@@ -16,17 +16,16 @@ router.post('/setVenta', auth.optional, (req, res, next) => {
     // chain all your queries here. make sure you return them.
     return db.T01FCBO.create(
       {
-        Ser_Boleta: '1231',
-        Num_Boleta: 'Abraham',
-        Cod_Sucur: '1',
-        Nom_Usu: 'Abraham',
-        Fecha_Boleta: '1990-09-01 00:00:00',
-        Nom_Cli: 'Abraham',
-        App_Cli: 'Abraham',
-        Apm_Cli: 'Abraham',
-        Sub_Total: 1,
-        IGV: 12,
-        Precio_Total: 21
+        Ser_Boleta: cabecera.Ser_Boleta,
+        Num_Boleta: cabecera.Num_Boleta,
+        Cod_Sucur: cabecera.Cod_Sucur,
+        id_Usuario: cabecera.id_Usuario,
+        id_Cliente: cabecera.id_Cliente,
+        Fecha_Boleta: cabecera.Fecha_Boleta,
+        Fecha_Venc_Boleta: cabecera.Fecha_Venc_Boleta,
+        Sub_Total: cabecera.Sub_Total,
+        IGV: 18,
+        Precio_Total: cabecera.Precio_Total
       },
       { transaction: t }
     )
@@ -43,7 +42,7 @@ router.post('/setVenta', auth.optional, (req, res, next) => {
         res.json({ status: 'Factura Ingresada' })
       })
       .catch((err) => {
-        res.status(400).send({ error: 'registro NO valido ' + err })
+        res.status(400).send({ error: 'registro No valido ' + err })
       })
   })
 })

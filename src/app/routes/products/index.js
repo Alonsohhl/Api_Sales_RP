@@ -182,7 +182,7 @@ router.get('/findbyId', auth.optional, (req, res) => {
     }
   })
     .then(function(data) {
-      if (!data) res.status(404).json('Producto no encontrado')
+      if (!data) return res.status(404).json('Producto no encontrado')
       res.json(data)
     })
     .catch(function(err) {

@@ -115,5 +115,9 @@ module.exports = function(sequelize, DataTypes) {
     }
   }
 
+  User.associate = function(models) {
+    models.t01fefm.hasMany(models.T01FCBO, { foreignKey: 'id_Usuario' })
+  }
+
   return User
 }

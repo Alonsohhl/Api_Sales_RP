@@ -1,5 +1,4 @@
-
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   var Products = sequelize.define('T01FMED', {
     // Cod_Cat: {//! agregar FK
     //   type: DataTypes.INTEGER,
@@ -35,7 +34,8 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       defaultValue: 0
     },
-    RUC: { //! agregar FK
+    RUC: {
+      //! agregar FK
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: ''
@@ -75,12 +75,12 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       defaultValue: '1'
     }
-  });
-  Products.associate = function (models) {
-    // models.T01FMED.hasOne(models.T01FCAT);
-    models.T01FMED.belongsTo(models.T01FCAT, { foreignKey: { allowNull: false } });
-    // models.T01FMED.BelongsToMany(models.T01FPRO, { foreignKey: { allowNull: false } });
-  };
+  })
+  Products.associate = function(models) {
+    models.T01FMED.belongsTo(models.T01FCAT, {
+      foreignKey: { allowNull: false }
+    })
+  }
 
-  return Products;
-};
+  return Products
+}
