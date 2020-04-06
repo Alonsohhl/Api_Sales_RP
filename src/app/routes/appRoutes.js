@@ -1,6 +1,6 @@
-const router = require('express').Router();
+const router = require('express').Router()
 // var db = require('../db');
-var passport = require('../config/passport');
+var passport = require('../config/passport')
 
 // const appController = require('../controllers/appController')
 // const userController = require('../controllers/userController')
@@ -12,8 +12,8 @@ var passport = require('../config/passport');
 // router.get('/', appController.index);
 
 router.post('/api/login', passport.authenticate('local'), function (req, res) {
-  res.json('/members');
-});
+  res.json('/members')
+})
 /* ====================== Empresa ==================== */
 // router.post('/insEmp', auth.optional, empController.insert); // Ins Empresa
 // router.post('/insProp', appController.insProp); //Ingresa propuesta de empresa

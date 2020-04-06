@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var fac = sequelize.define(
     'T01FCBO',
     {
@@ -6,13 +6,13 @@ module.exports = function(sequelize, DataTypes) {
       Ser_Boleta: {
         type: DataTypes.STRING(4),
         allowNull: false,
-        unique: false,
+        unique: 'uniqueNroFac',
         defaultValue: 'F001'
       },
       Num_Boleta: {
         type: DataTypes.STRING(8),
         allowNull: false,
-        unique: false
+        unique: 'uniqueNroFac'
       },
       Cod_Sucur: {
         type: DataTypes.INTEGER,
@@ -49,11 +49,13 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     {
-      freezeTableName: true
+      tableName: 'T01FCBO'
     }
   )
-  fac.associate = function(models) {
+  fac.associate = function (models) {
     models.T01FCBO.hasMany(models.T01FCBODET)
+    models.T01FCBO.belongsTo(models.t01fcli, { foreignKey: 'id_Cliente' })
   }
+
   return fac
 }

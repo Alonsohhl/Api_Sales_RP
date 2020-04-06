@@ -30,11 +30,11 @@ router.post('/insert', auth.optional, (req, res) => {
     T01FCATId: product.T01FCATId,
     T01FPROId: product.T01FPROId
   })
-    .then(function() {
+    .then(function () {
       res.json({ status: 'Producto Ingresado' })
       res.end()
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // if (err.errors[0].message) {
       // res.status(400);
       res.status(400).send({ error: err })
@@ -65,11 +65,11 @@ router.post('/insertCategory', auth.optional, (req, res) => {
     Cod_Cat: categoria.Cod_Cat,
     Desc_Cat: categoria.Desc_Cat
   })
-    .then(function() {
+    .then(function () {
       res.json({ status: 'Categoria Ingresada' })
       res.end()
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.status(400).send({ error: err })
     })
 })
@@ -134,16 +134,16 @@ router.get('/getall/:limit?/:razSoc?', auth.optional, (req, res) => {
       }
     }
   })
-    .then(function(data) {
+    .then(function (data) {
       res.json(data)
       // res.end();
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // if (err.errors[0].message) {
       //   res.status(422).json({ error: err.errors[0].message });
       // }
       res.json(err)
-      // return res.end();
+      return res.end()
     })
 })
 router.get('/getProdByCodOrDesc/:razSocOrId?/', auth.optional, (req, res) => {
@@ -165,10 +165,10 @@ router.get('/getProdByCodOrDesc/:razSocOrId?/', auth.optional, (req, res) => {
       ]
     }
   })
-    .then(function(data) {
+    .then(function (data) {
       res.json(data)
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.json(err)
     })
 })
@@ -181,11 +181,11 @@ router.get('/findbyId', auth.optional, (req, res) => {
       id: queryID
     }
   })
-    .then(function(data) {
+    .then(function (data) {
       if (!data) return res.status(404).json('Producto no encontrado')
       res.json(data)
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.json(err)
     })
 })
@@ -198,10 +198,10 @@ router.get('/getcat/:limit', auth.optional, (req, res) => {
       activo: true
     }
   })
-    .then(function(data) {
+    .then(function (data) {
       res.json(data)
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.json(err)
     })
 })
@@ -223,10 +223,10 @@ router.get('/getproveedores/', auth.optional, (req, res) => {
       }
     }
   })
-    .then(function(data) {
+    .then(function (data) {
       res.json(data)
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // if (err.errors[0].message) {
       //   res.status(422).json({ error: err.errors[0].message });
       // }
