@@ -10,7 +10,7 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: 'F001'
       },
       Num_Boleta: {
-        type: DataTypes.STRING(8),
+        type: DataTypes.INTEGER,
         allowNull: false,
         unique: 'uniqueNroFac'
       },

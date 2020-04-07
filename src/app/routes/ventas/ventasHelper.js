@@ -1,23 +1,16 @@
 var db = require('../../db')
+const Sequelize = require('sequelize')
 
 module.exports = {
   getFacNum: async (ser) => {
-    return db.T01FCBO.findOne({
-      where: { Ser_Boleta: ser },
-      order: [['createdAt', 'DESC']]
-    })
+    return db.T01FCBO.max('Num_Boleta', { where: { Ser_Boleta: ser } }) // 10
+
       .then((record) => {
-        if (!!!record) {
-          return 1
-        } else {
-          return ++record.dataValues.Num_Boleta
-        }
+        return ++record
       })
       .catch((err) => {
+        console.log(err)
         return 0
       })
-  },
-  test: () => {
-    return 1
   }
 }

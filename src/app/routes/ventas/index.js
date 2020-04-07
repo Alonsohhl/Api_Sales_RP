@@ -37,15 +37,48 @@ router.post('/setVenta', auth.optional, (req, res, next) => {
             cabecera.detalle[indice].Num_Boleta = cabReg.Num_Boleta
             cabecera.detalle[indice].T01FCBOId = cabReg.id
           })
-          return db.T01FCBODET.bulkCreate(cabecera.detalle, { transaction: t })
+          return {
+            cabId: cabReg.id,
+            data: db.T01FCBODET.bulkCreate(cabecera.detalle, {
+              transaction: t
+            })
+          }
         })
         .then((result) => {
-          res.status(200).json({ status: 'Factura Ingresada' })
+          res
+            .status(200)
+            .json({ status: 'Factura Ingresada', id: result.cabId })
         })
         .catch((err) => {
           res.status(400).send({ error: 'registro No valido ' + err })
         })
     })
+  })
+})
+
+router.get('/findInvoice', auth.optional, (req, res, next) => {
+  let queryId = req.query.id ? req.query.id : null
+  if (!queryId) return res.status(404).json({ error: 'Id Invalido' })
+
+  db.T01FCBO.findOne({
+    include: [
+      {
+        model: db.t01fcli
+      },
+      {
+        model: db.T01FCBODET
+      }
+    ],
+    limit: 20,
+    // order: [['updatedAt', 'DESC']],
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    where: { id: queryId }
+  }).then((doc) => {
+    if (doc === null) {
+      return res.status(404).json({ error: 'no Encontrado' })
+    } else {
+      return res.status(200).json(doc)
+    }
   })
 })
 
