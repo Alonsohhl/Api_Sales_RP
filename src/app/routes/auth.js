@@ -4,6 +4,7 @@ const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 var db = require('../db')
 const passport = require('passport')
+require('passport')
 
 const getTokenFromHeaders = (req) => {
   const {
